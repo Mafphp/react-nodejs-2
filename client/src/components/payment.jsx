@@ -6,7 +6,7 @@ class Payment extends Component {
     return (
       <React.Fragment>
         <form action="" className="card p-2 m-3">
-          <div class="row">
+          <div className="row">
             <div className="col-md-6 m-3">
               <label htmlFor="cc-name">Name on Card</label>
               <input
@@ -35,7 +35,7 @@ class Payment extends Component {
               </div>
             </div>
           </div>
-          <div class="row">
+          <div className="row">
             <div className="col-md-3 m-3">
               <label htmlFor="cc-name">Expiration</label>
               <input
@@ -59,7 +59,7 @@ class Payment extends Component {
               <div className="invalid-feedback">Security code required</div>
             </div>
           </div>
-          <hr class="mb-4"></hr>
+          <hr className="mb-4"></hr>
           <buttbutton className="btn btn-primary">Submit</buttbutton>
         </form>
       </React.Fragment>

@@ -10,12 +10,14 @@ import NotFound from "./components/notfound";
 import Configure from "./components/configure";
 import LoginForm from "./components/login";
 import Payment from "./components/payment";
+import Logout from "./components/Logout";
 import "./App.css";
 import API from "./components/services/httpservice";
 import NavBar from "./components/navbar";
 class App extends Component {
   state = {
     cars: [],
+    token: null,
   };
 
   async componentDidMount() {
@@ -31,19 +33,19 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <NavBar />
+        <NavBar/>
         <div className="container">
           <Switch>
-            <Route path="/payment" component={Payment}></Route>
             <Route path="/configure" component={Configure}></Route>
             <Route path="/login" component={LoginForm}></Route>
+            <Route path="/logout" component={Logout}></Route>
             <Route
               path="/vehicles"
               render={() => <Vehicles listCars={this.state.cars} />}
             ></Route>
             <Route path="/not-found" component={NotFound}></Route>
             <Redirect from="/" exact to="vehicles" />
-            <Redirect to="/not-found " /> //apply to all
+            <Redirect to="/not-found" /> //apply to all
           </Switch>
         </div>
         <Footers />
