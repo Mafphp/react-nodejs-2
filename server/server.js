@@ -32,7 +32,6 @@ app.use("/", indexRouter);
 var usersRouter = require("./routes/users");
 app.use("/users", usersRouter);
 var vehiclesRouter = require("./routes/vehicles");
-const { JsonWebTokenError } = require("jsonwebtoken");
 app.use("/vehicles", privateRoute, vehiclesRouter);
 
 var reservationRouter = require("./routes/reservations");

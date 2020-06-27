@@ -33,7 +33,7 @@ class Header extends Component {
     return (
       <React.Fragment>
         <nav className="navbar navbar-expand-lg navbar-light bg-light m-2">
-          <Link className="navbar-brand" to="#">
+          {/* <Link className="navbar-brand" to="/">
             Car Rental
           </Link>
           <Link className="navbar-brand" to="/login">
@@ -44,7 +44,7 @@ class Header extends Component {
           </Link>
           <Link className="navbar-brand" to="/configure">
             Configure
-          </Link>
+          </Link> */}
           {/* <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <form className="form-inline my-2 my-lg-0">
               <input

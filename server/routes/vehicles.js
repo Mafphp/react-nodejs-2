@@ -20,7 +20,6 @@ router.get("/category", async function (req, res) {
       type: QueryTypes.SELECT,
     }
   );
-  console.log(result);
   res.json({
     status: 200,
     data: result,
