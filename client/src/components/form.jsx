@@ -1,15 +1,27 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { getprice } from "./services/getprice";
+import API from "./services/httpservice";
+import * as moment from "moment";
 class Criteria extends Component {
   state = {
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: moment().toDate(),
+    endDate: moment().toDate(),
     KM: "",
     insurance: "",
     category: "",
     age: "",
     extraDriver: "",
+    basePrice: "",
+    totalNumberOfCategory: "",
+    totalPrice: "",
+    totalNumberOfBooked: "",
+  };
+  getBasePrice = async (e) => {
+    const res = await API.post("vehicles/category", {
+      category: `${e.target.value}`,
+    });
   };
 
   changeHandlerKM = (e) => {
@@ -24,28 +36,69 @@ class Criteria extends Component {
     this.setState({ insurance: e.target.value });
     console.log(e.target.value);
   };
-  changeHandlercategory = (e) => {
-    this.setState({ category: e.target.value });
+  changeHandlercategory = async (e) => {
+    let value = e.target.value;
     console.log(e.target.value);
+    const totalNumberOfCategory = await API.post("vehicles/category/total", {
+      category: `${value}`,
+    });
+    console.log(totalNumberOfCategory);
+    const res = await API.post("vehicles/category", {
+      category: `${value}`,
+    });
+    console.log(res);
+    this.setState({
+      category: value,
+      basePrice: res.data.data.price,
+      totalNumberOfCategory: totalNumberOfCategory.data.data,
+    });
+    console.log(value);
   };
   changeHandlerExtra = (e) => {
     this.setState({ extraDriver: e.target.value });
     console.log(e.target.value);
   };
-  handleChange = (date) => {
+  handleChange = (date, key) => {
     this.setState({
-      startDate: date,
-    });
-  };
-  handleChange2 = (date) => {
-    this.setState({
-      endDate: date,
+      [key]: date,
     });
   };
 
+  calculatePrice = (e) => {
+    e.preventDefault();
+    let { KM, insurance, age, extraDriver, basePrice, totalPrice } = this.state;
+    let fivePercent = 5 / 100;
+    let tenPercent = 10 / 100;
+    let fifteenPercent = 15 / 100;
+    let twentyPercent = 20 / 100;
+    let totalPrices = basePrice;
+    if (KM === "less 150KM") totalPrices += 0;
+    else if (KM === "less 50KM") totalPrices -= fivePercent * basePrice;
+    else if (KM === "Unlimited") totalPrices += fivePercent * basePrice;
+    console.log(basePrice);
+    if (age === "below 25") totalPrices += fivePercent * basePrice;
+    else if (age === "over 65") totalPrices += tenPercent * basePrice;
+    else if (age === "25 to 65") totalPrices += 0;
+    console.log(basePrice);
+
+    if (extraDriver !== "") totalPrices += fifteenPercent * basePrice;
+    if (insurance === "Yes") totalPrices += twentyPercent * basePrice;
+    // if (
+    //   totalNumberOfCategory - totalNumberOfBooked <=
+    //   tenPercent * totalNumberOfCategory
+    // )
+    //   basePrice += tenPercent * basePrice;
+
+    this.setState({ totalPrice: totalPrices });
+    console.log(totalPrice);
+  };
+
   render() {
-    console.log(Object.values(this.state));
+    console.log("value of caat", this.state.totalNumberOfCategory);
+    console.log("startDate", this.state.startDate);
+    console.log("endDate", this.state.endDate);
     console.log(Object.keys(this.state));
+    console.log(Object.values(this.state));
     return (
       <React.Fragment>
         <form>
@@ -56,7 +109,7 @@ class Criteria extends Component {
                   <label htmlFor="basic-url ">Starting Date </label>
                   <DatePicker
                     selected={this.state.startDate}
-                    onChange={(date) => this.handleChange(date)}
+                    onChange={(date) => this.handleChange(date, "startDate")}
                     dateFormat="dd/MM/yyyy"
                     minDate={new Date()}
                   />
@@ -66,7 +119,7 @@ class Criteria extends Component {
                     <label htmlFor="basic-url">End Date </label>
                     <DatePicker
                       selected={this.state.endDate}
-                      onChange={(date) => this.handleChange2(date)}
+                      onChange={(date) => this.handleChange(date, "endDate")}
                       dateFormat="dd/MM/yyyy"
                       minDate={this.state.startDate}
                     />
@@ -95,7 +148,7 @@ class Criteria extends Component {
                   <div className="col-md-7">
                     <label htmlFor="insurance">Insurance</label>
                     <select
-                      onChange={this.changeHandlerIns}
+                      onChange={(e) => this.changeHandlerIns(e)}
                       name=""
                       id="insurance"
                       className="custom-select d-black w-100"
@@ -111,7 +164,7 @@ class Criteria extends Component {
                   <div className="col-md-7">
                     <label htmlFor="category">Category</label>
                     <select
-                      onChange={this.changeHandlercategory}
+                      onChange={(e) => this.changeHandlercategory(e)}
                       name=""
                       id="category"
                       className="custom-select d-black w-100"
@@ -166,7 +219,8 @@ class Criteria extends Component {
                 </td>
                 <td>
                   <button
-                    onClick={this.handleDelete}
+                    value=""
+                    onClick={this.calculatePrice}
                     className="btn btn-danger btn-sm m-5"
                   >
                     Search

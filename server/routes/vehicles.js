@@ -32,20 +32,26 @@ router.post("/category", async function (req, res) {
     attributes: ["price"],
     where: { category: req.body.category },
   });
+  onePrice = price.dataValues;
+  console.log(onePrice);
   console.log(req.body);
   console.log("exit");
-  res.json({
+  let a = res.json({
     status: 200,
-    data: price,
+    data: onePrice,
   });
-  // await db.user.create(req.body);
-  // res.send("user create successfully");
-  // const result = await db.user.findAll()
-  // console.log('exit');
-  // res.json({
-  //   status: 200,
-  //   data: result
-  // });
+});
+router.post("/category/total", async function (req, res) {
+  let total = await db.vehicles.findAndCountAll({
+    where: { category: req.body.category },
+  });
+
+  console.log(total.count);
+  oneTotal = total.count;
+  let a = res.json({
+    status: 200,
+    data: oneTotal,
+  });
 });
 
 module.exports = router;
