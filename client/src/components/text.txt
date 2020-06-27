@@ -1,0 +1,16 @@
+<div className="form-group">
+            <label htmlFor="cardNumber">card number</label>
+            <input id="cardNumber" type="text" className="form-control" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="cardHolder"></label>Card Holder
+            <input id="cardHolder" type="text" className="form-control" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="expireDate"></label>MM/YY
+            <input id="expireDate" type="text" className="form-control" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="cvv"></label>CVV
+            <input id="cvv" type="text" className="form-control" />
+          </div>

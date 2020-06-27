@@ -1,6 +1,6 @@
 "use strict";
 module.exports = (sequelize, DataTypes) => {
-  const vehicle = sequelize.define(
+  const vehicles = sequelize.define(
     "vehicles",
     {
       brand: DataTypes.STRING,
@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
       category: DataTypes.STRING,
       price: DataTypes.INTEGER,
     },
+
     { timestamps: true }
   );
+  return vehicles;
 };
-return vehicles;

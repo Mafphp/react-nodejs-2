@@ -7,31 +7,36 @@ module.exports = {
       [
         {
           username: "admin",
-          password: "123",
+          password:
+            "$2b$10$BuzTq5zcBR77Non7XTEo6eD5.Nee214NAOVf7NUA6FUnkNJF3CKmu",
           createdAt: new Date().toDateString(),
           updatedAt: new Date().toDateString(),
         },
         {
           username: "alireza",
-          password: "123",
+          password:
+            "$2b$10$BuzTq5zcBR77Non7XTEo6eD5.Nee214NAOVf7NUA6FUnkNJF3CKmu",
           createdAt: new Date().toDateString(),
           updatedAt: new Date().toDateString(),
         },
         {
           username: "mosi",
-          password: "123",
+          password:
+            "$2b$10$BuzTq5zcBR77Non7XTEo6eD5.Nee214NAOVf7NUA6FUnkNJF3CKmu",
           createdAt: new Date().toDateString(),
           updatedAt: new Date().toDateString(),
         },
         {
           username: "farhad",
-          password: "123",
+          password:
+            "$2b$10$BuzTq5zcBR77Non7XTEo6eD5.Nee214NAOVf7NUA6FUnkNJF3CKmu",
           createdAt: new Date().toDateString(),
           updatedAt: new Date().toDateString(),
         },
         {
           username: "amir",
-          password: "123",
+          password:
+            "$2b$10$BuzTq5zcBR77Non7XTEo6eD5.Nee214NAOVf7NUA6FUnkNJF3CKmu",
           createdAt: new Date().toDateString(),
           updatedAt: new Date().toDateString(),
         },
