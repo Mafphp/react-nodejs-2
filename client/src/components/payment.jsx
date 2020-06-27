@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 
 class Payment extends Component {
   state = {};
@@ -60,7 +61,9 @@ class Payment extends Component {
             </div>
           </div>
           <hr class="mb-4"></hr>
-          <buttbutton className="btn btn-primary">Submit</buttbutton>
+          <buttbutton Redirect="/configure" className="btn btn-primary">
+            Submit
+          </buttbutton>
         </form>
       </React.Fragment>
     );

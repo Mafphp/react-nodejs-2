@@ -18,11 +18,7 @@ class Configure extends Component {
             <Criteria />
           </div>
         </div>
-        <div className="row">
-          <div className="col">
-            <Booking />
-          </div>
-        </div>
+
         <div className="row m-2">
           <div className="col">
             <Reservation />

@@ -3,7 +3,10 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { getprice } from "./services/getprice";
 import API from "./services/httpservice";
+import { Link } from "react-router-dom";
 import * as moment from "moment";
+import Booking from "./booking";
+
 class Criteria extends Component {
   state = {
     startDate: moment().toDate(),
@@ -17,6 +20,7 @@ class Criteria extends Component {
     totalNumberOfCategory: "",
     totalPrice: "",
     totalNumberOfBooked: "",
+    numberOfavailability: "",
   };
   getBasePrice = async (e) => {
     const res = await API.post("vehicles/category", {
@@ -63,9 +67,40 @@ class Criteria extends Component {
       [key]: date,
     });
   };
+  handlertotalNumberOfBooked = async (e) => {
+    e.preventDefault();
+    let {
+      startDate,
+      endDate,
+      KM,
+      insurance,
+      category,
+      age,
+      extraDriver,
+      basePrice,
+      totalPrice,
+      totalNumberOfCategory,
+      numberOfavailability,
+      totalNumberOfBooked,
+    } = this.state;
+    const res = await API.post("reservations/category", {
+      category: { category },
+      startDate: { startDate },
+      endDate: { endDate },
+    });
+    console.log(res.data.data);
+    this.setState({
+      totalNumberOfBooked: res.data.data,
+      numberOfavailability: totalNumberOfCategory - totalNumberOfBooked,
+    });
+
+    if (numberOfavailability !== 0) this.calculatePrice();
+    else console.log("Oppsssss");
+    // if (result !== 0) calculatePrice();
+  };
 
   calculatePrice = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     let { KM, insurance, age, extraDriver, basePrice, totalPrice } = this.state;
     let fivePercent = 5 / 100;
     let tenPercent = 10 / 100;
@@ -98,7 +133,8 @@ class Criteria extends Component {
     console.log("startDate", this.state.startDate);
     console.log("endDate", this.state.endDate);
     console.log(Object.keys(this.state));
-    console.log(Object.values(this.state));
+    const { numberOfavailability, totalPrice } = this.state;
+
     return (
       <React.Fragment>
         <form>
@@ -110,7 +146,7 @@ class Criteria extends Component {
                   <DatePicker
                     selected={this.state.startDate}
                     onChange={(date) => this.handleChange(date, "startDate")}
-                    dateFormat="dd/MM/yyyy"
+                    dateFormat="yyyy/MM/dd"
                     minDate={new Date()}
                   />
                 </td>
@@ -220,11 +256,26 @@ class Criteria extends Component {
                 <td>
                   <button
                     value=""
-                    onClick={this.calculatePrice}
+                    onClick={this.handlertotalNumberOfBooked}
                     className="btn btn-danger btn-sm m-5"
                   >
                     Search
                   </button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div>
+                    <p>
+                      {numberOfavailability} cars are Available and the Price is
+                      {totalPrice}, please click Book for reservation
+                    </p>
+                  </div>
+                </td>
+                <td className="col ">
+                  <Link to="/payment" className="btn btn-primary">
+                    Book
+                  </Link>
                 </td>
               </tr>
             </tbody>

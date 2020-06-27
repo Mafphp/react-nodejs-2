@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   reservations.init(
     {
-      start_date: DataTypes.DATE,
-      end_date: DataTypes.DATE,
+      startDate: DataTypes.DATE,
+      endDate: DataTypes.DATE,
       username: DataTypes.STRING,
       category: DataTypes.STRING,
     },
