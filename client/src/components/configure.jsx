@@ -4,8 +4,10 @@ import Reservation from "./reservation";
 import History from "./history";
 
 import Cookies from "universal-cookie";
-import API from "./services/httpservice";
+// import API from "./services/httpservice";
 import { updateStatus } from "./services/updateReservationStatus";
+import API from "./services/API";
+import { AuthContext } from "../auth/AuthContext";
 class Configure extends Component {
   state = {
     price: "",
@@ -15,46 +17,52 @@ class Configure extends Component {
   };
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      reserveList: [],
+      historyList: [],
+    };
   }
 
   async componentDidMount() {
-    updateStatus();
-    const reservList = await API.get("reservations/username/current");
-    const historyList = await API.get("reservations/username/history");
+    // updateStatus();
+    const reserveList = await API.getReservations();
+    console.log({reserveList});
     this.setState({
-      historyList: historyList.data.data,
-      reservList: reservList.data.data,
+      reserveList
     });
-    const token = new Cookies().get("token");
-    if (!token) {
-      this.props.history.push("/login");
-    }
+    // const historyList = await API.get("reservations/username/history");
+    // this.setState({
+    //   historyList: historyList.data.data,
+    //   reservList: reservList.data.data,
+    // });
   }
   myCallback = (e) => {
     this.setState({ listData: e });
   };
   render() {
-    const token = new Cookies().get("token");
     return (
-      <React.Fragment>
-        <div className="row m-2">
-          <div className="col">
-            <Criteria callbackFromParent={this.myCallback} />
+      <AuthContext.Consumer>
+        {(context) => (
+          <React.Fragment>
+          <div className="row m-2">
+            <div className="col">
+              <Criteria callbackFromParent={this.myCallback} />
+            </div>
           </div>
-        </div>
-
-        <div className="row m-2">
-          <div className="col">
-            <Reservation currentData={this.state.reservList} />
+  
+          <div className="row m-2">
+            <div className="col">
+              <Reservation currentData={this.state.reserveList} />
+            </div>
           </div>
-        </div>
-        <div className="row m-2">
-          <div className="col ">
-            <History historyData={this.state.historyList} />
+          <div className="row m-2">
+            <div className="col ">
+              <History historyData={this.state.historyList} />
+            </div>
           </div>
-        </div>
-      </React.Fragment>
+        </React.Fragment>
+        )}
+      </AuthContext.Consumer>
     );
   }
 }

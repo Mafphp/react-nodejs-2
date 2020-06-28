@@ -1,62 +1,47 @@
-var createError = require("http-errors");
-var express = require("express");
-var bodyParser = require("body-parser");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-var cors = require("cors");
-const jwt = require("jsonwebtoken");
+'use strict';
+//import express
+const express = require('express');
+const morgan = require('morgan'); // logging middleware
+const jwt = require('express-jwt');
+const cookieParser = require('cookie-parser');
+const jwtSecret = '12345';
+// Authorization error
+const authErrorObj = { errors: [{  'param': 'Server', 'msg': 'Authorization error' }] };
 
-var app = express();
+//create application
+const app = express();
+const port = 3002;
 
-app.use(cors());
+// Set-up logging
+app.use(morgan('tiny'));
+
+// Process body content
+app.use(express.json());
+
+// Public Routes
+const publicRoutes = require('./routes/publicRoutes');
+app.use('/public', publicRoutes);
 app.use(cookieParser());
-app.use(logger("dev"));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public")));
 
-const privateRoute = (req, res, next) => {
-  if (req.cookies && req.cookies.token) {
-    try {
-      req.user = jwt.verify(req.cookies.token, "12345");
-    } catch (err) {
-      res.status(500).send(err.message);
-    }
-  }
-  next();
-};
-app.use((req, res, next) => {
-  if (req.cookies && req.cookies.token) {
-    req.user = jwt.verify(req.cookies.token, "12345");
-  }
-  next();
-});
 
-var indexRouter = require("./routes/index");
-app.use("/", indexRouter);
-var usersRouter = require("./routes/users");
-app.use("/users", usersRouter);
-var vehiclesRouter = require("./routes/vehicles");
-app.use("/vehicles", privateRoute, vehiclesRouter);
-
-var reservationRouter = require("./routes/reservations");
-app.use("/reservations", reservationRouter);
-
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
-});
-
-// error handler
+// For the rest of the code, all APIs require authentication
+app.use(
+    jwt({
+      secret: jwtSecret,
+      getToken: req => req.cookies.token
+    })
+  );
+  
+// To return a better object in case of errors
 app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+    if (err.name === 'UnauthorizedError') {
+      res.status(401).json(authErrorObj);
+    }
+  });
 
-  // render the error page
-  res.status(err.status || 500);
-  res.send(err.message).status(err.status);
-});
+// AUTHENTICATED REST API endpoints
+const privateRoutes = require('./routes/privateRoutes');
+app.use('/private', privateRoutes);
 
-module.exports = app;
+//activate server
+app.listen(port, () => console.log(`Server ready on port ${port}`));

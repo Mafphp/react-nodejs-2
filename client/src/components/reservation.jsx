@@ -12,7 +12,7 @@ class Reservation extends Component {
   render() {
     const columns = [
       {
-        name: "start_date",
+        name: "startDate",
         label: "Starting Date",
         options: {
           filter: true,
@@ -20,7 +20,7 @@ class Reservation extends Component {
         },
       },
       {
-        name: "end_date",
+        name: "endDate",
         label: "End Date",
         options: {
           filter: true,
