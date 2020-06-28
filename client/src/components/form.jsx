@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { getprice } from "./services/getprice";
 import API from "./services/httpservice";
 import { Link } from "react-router-dom";
 import * as moment from "moment";
-import Booking from "./booking";
 
 class Criteria extends Component {
   state = {
@@ -33,44 +31,37 @@ class Criteria extends Component {
   };
 
   getBasePrice = async (e) => {
-    const res = await API.post("vehicles/category", {
+    await API.post("vehicles/category", {
       category: `${e.target.value}`,
     });
   };
 
   changeHandlerKM = (e) => {
     this.setState({ KM: e.target.value });
-    console.log(e.target.value);
   };
   changeHandlerAge = (e) => {
     this.setState({ age: e.target.value });
-    console.log(e.target.value);
   };
   changeHandlerIns = (e) => {
     this.setState({ insurance: e.target.value });
-    console.log(e.target.value);
   };
   changeHandlercategory = async (e) => {
     let value = e.target.value;
-    console.log(e.target.value);
     const totalNumberOfCategory = await API.post("vehicles/category/total", {
       category: `${value}`,
     });
-    console.log(totalNumberOfCategory);
     const res = await API.post("vehicles/category", {
       category: `${value}`,
     });
-    console.log(res);
+
     this.setState({
       category: value,
       basePrice: res.data.data.price,
       totalNumberOfCategory: totalNumberOfCategory.data.data,
     });
-    console.log(value);
   };
   changeHandlerExtra = (e) => {
     this.setState({ extraDriver: e.target.value });
-    console.log(e.target.value);
   };
   handleChange = (date, key) => {
     this.setState({
@@ -94,9 +85,9 @@ class Criteria extends Component {
       totalNumberOfBooked,
     } = this.state;
     const res = await API.post("reservations/category", {
-      category: { category },
-      startDate: { startDate },
-      endDate: { endDate },
+      category: category,
+      startDate: startDate,
+      endDate: endDate,
     });
     console.log(res.data.data);
     this.setState({
@@ -120,11 +111,10 @@ class Criteria extends Component {
     if (KM === "less 150KM") totalPrices += 0;
     else if (KM === "less 50KM") totalPrices -= fivePercent * basePrice;
     else if (KM === "Unlimited") totalPrices += fivePercent * basePrice;
-    console.log(basePrice);
+
     if (age === "below 25") totalPrices += fivePercent * basePrice;
     else if (age === "over 65") totalPrices += tenPercent * basePrice;
     else if (age === "25 to 65") totalPrices += 0;
-    console.log(basePrice);
 
     if (extraDriver !== "") totalPrices += fifteenPercent * basePrice;
     if (insurance === "Yes") totalPrices += twentyPercent * basePrice;
@@ -135,14 +125,9 @@ class Criteria extends Component {
     //   basePrice += tenPercent * basePrice;
 
     this.setState({ totalPrice: totalPrices });
-    console.log(totalPrice);
   };
 
   render() {
-    console.log("value of caat", this.state.totalNumberOfCategory);
-    console.log("startDate", this.state.startDate);
-    console.log("endDate", this.state.endDate);
-    console.log(Object.keys(this.state));
     const { numberOfavailability, totalPrice } = this.state;
 
     return (
@@ -154,11 +139,8 @@ class Criteria extends Component {
                 <td>
                   <label htmlFor="basic-url ">Starting Date </label>
                   <DatePicker
-                    selected={this.state.date}
-                    onChange={(value: any) => {
-                      // value here is javascript date object
-                      this.setState({ date: moment(value) });
-                    }}
+                    selected={this.state.startDate}
+                    onChange={(date) => this.handleChange(date, "startDate")}
                     dateFormat="yyyy/MM/dd"
                     minDate={new Date()}
                   />
@@ -287,7 +269,10 @@ class Criteria extends Component {
                 </td>
                 <td className="col ">
                   <Link
-                    to={`/payment/${this.state.startDate}/${this.state.endDate}/${this.state.category}`}
+                    to={{
+                      pathname: "/payment",
+                      state: this.state,
+                    }}
                     className="btn btn-primary"
                   >
                     Book

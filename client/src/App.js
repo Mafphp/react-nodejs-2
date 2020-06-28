@@ -49,7 +49,7 @@ class App extends Component {
             ></Route>
             <Route path="/not-found" component={NotFound}></Route>
             <Redirect from="/" exact to="vehicles" />
-            {/* <Redirect to="/not-found" /> //apply to all */}
+            <Redirect to="/not-found" /> //apply to all
           </Switch>
         </div>
         <Footers />

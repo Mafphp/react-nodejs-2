@@ -1,16 +1,21 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
+import API from "./services/httpservice";
 
 class Payment extends Component {
+  constructor(props) {
+    super(props);
+  }
+  componentDidMount() {
+    console.log("props@", this.props);
+  }
+  handlerPress = () => {
+    const { startDate, endDate, totalPrice } = this.props;
+    API.post("reservation", {
+      startDate: this.props.startDate,
+    });
+  };
   state = {};
-
-  // handlerPress = async(props) => {
-  //   const res = await API.post("reservations/", {
-  //     category: { props.match.params.name },
-  //     startDate: { startDate },
-  //     endDate: { endDate },
-  //   });
-  // };
 
   render() {
     return (

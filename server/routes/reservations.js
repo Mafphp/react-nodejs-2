@@ -6,12 +6,12 @@ const { QueryTypes } = require("sequelize");
 const { sequelize } = require("../models");
 
 router.get("/username/history", async function (req, res) {
+  console.log("user@", req.user);
   const result = await db.reservations.findAll({
-    where: { status: false },
+    where: { status: true, username: req.user.username },
   });
-  // console.log(result);
-  // console.log("exit");
-  let a = res.json({
+  console.log("result", result);
+  res.json({
     status: 200,
     data: result,
   });

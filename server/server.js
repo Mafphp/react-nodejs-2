@@ -26,6 +26,13 @@ const privateRoute = (req, res, next) => {
   }
   next();
 };
+app.use((req, res, next) => {
+  console.log(req.cookies);
+  if (req.cookies && req.cookies.token) {
+    req.user = jwt.verify(req.cookies.token, "12345");
+  }
+  next();
+});
 
 var indexRouter = require("./routes/index");
 app.use("/", indexRouter);
