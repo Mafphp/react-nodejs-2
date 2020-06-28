@@ -17,7 +17,7 @@ export default function Navbar () {
               <Link className="navbar-brand" to="/configure">
                 Configure
               </Link>
-              <Link className="navbar-brand" to="/logout" onClick={context.logoutUser}>
+              <Link className="navbar-brand" to="/logout" onClick={() => context.logoutUser()}>
                 Logout
               </Link>
             </React.Fragment>

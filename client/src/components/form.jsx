@@ -84,14 +84,8 @@ class Criteria extends Component {
       startDate: startDate,
       endDate: endDate,
     });
-    console.log({getReservationOnCategory});
-    // const res = await API.post("reservations/category", {
-    //   category: category,
-    //   startDate: startDate,
-    //   endDate: endDate,
-    // });
     this.setState({
-      // totalNumberOfBooked: res.data.data,
+      totalNumberOfBooked: getReservationOnCategory,
       numberOfavailability: totalNumberOfCategory - totalNumberOfBooked,
     });
 

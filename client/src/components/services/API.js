@@ -27,7 +27,7 @@ async function userLogin(username, password) {
 
 async function userLogout(username, password) {
     return new Promise((resolve, reject) => {
-        fetch(baseURL + '/logout', {
+        fetch(publicUrl + '/logout', {
             method: 'POST',
         }).then((response) => {
             if (response.ok) {

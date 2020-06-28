@@ -35,7 +35,7 @@ class App extends Component {
   logout = () => {
     API.userLogout().then(() => {
       this.setState({authUser: null,authErr: null, tasks: null});
-      API.getTasks().catch((errorObj)=>{this.handleErrors(errorObj)});
+      this.props.history.push('/login')
     });
   }
   login = (username, password) => {

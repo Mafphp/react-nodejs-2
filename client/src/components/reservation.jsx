@@ -54,7 +54,7 @@ class Reservation extends Component {
         if (dataRows[0]) {
           const id = dataRows[0][0];
           await API.cancelReservation({id});
-          this.props.history.push('configure');
+          window.location.reload();
         } else {
           alert('could not cancel last reservation')
         }
