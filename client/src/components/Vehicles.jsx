@@ -1,47 +1,74 @@
 import React, { Component } from "react";
-import * as axios from 'axios';
-// import API from "../services/http.service";
+import DataTable from "./DataTable";
+import API from "./services/httpservice";
 class Vehicles extends Component {
-  state = {
-    cars: [],
-  };
-  async componentDidMount() {
-    const result = await axios.get('http://localhost:3002/users')
-    this.setState({
-      cars: result.data.data
-    })
-    console.log(result);
-    // const { data: cars } = await API.get(`vehicles`);
-    // this.setState({ cars });
+  // const { data: cars } = await API.get(`vehicles`);
+  // this.setState({ cars });
+  // console.log(response);
 
-    // console.log(response);
-  }
   render() {
+    const columns = [
+      {
+        name: "category",
+        label: "category",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
+        name: "brand",
+        label: "brand",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
+        name: "model",
+        label: "model",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+    ];
+
     return (
-      <table className="table">
-        <thead>
-          <tr>
-            <th>firstname</th>
-            <th>surname</th>
-            <th>age</th>
-          </tr>
-        </thead>
-        <tbody>
-          {this.state.cars.map((car, i) => (
-            <tr key={i}>
-              <td>{car.id}</td>
-              <td>{car.firstname}</td>
-              <td>{car.surname}</td>
-              <td>{car.age}</td>
-            </tr>
-          ))}
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
+      <DataTable
+        columns={columns}
+        title={"Vehicles List"}
+        data={this.props.listCars}
+      />
+
+      // <div className="row">
+      //   <div className="col-m2"></div>
+      //   <div className="col">
+      //     <table className="table">
+      //       <thead>
+      //         <tr>
+      //           <th>category</th>
+      //           <th>brand</th>
+      //           <th>model</th>
+      //         </tr>
+      //       </thead>
+      //       <tbody>
+      //         {this.state.cars.map((car, i) => (
+      //           <tr key={i}>
+      //             <td>{car.category}</td>
+      //             <td>{car.brand}</td>
+      //             <td>{car.model}</td>
+      //           </tr>
+      //         ))}
+      //         <tr>
+      //           <td></td>
+      //           <td></td>
+      //           <td></td>
+      //         </tr>
+      //       </tbody>
+      //     </table>
+      //   </div>
+      // </div>
     );
   }
 }
