@@ -22,7 +22,6 @@ router.post("/category", async function (req, res) {
         },
       }
     );
-    console.log(result[0][0].count);
     res.json({
       status: 200,
       data: result[0][0].count,

@@ -6,7 +6,6 @@ const cookieParser = require("cookie-parser");
 const session = require('express-session');
 const logger = require("morgan");
 const cors = require("cors");
-const jwt = require("jsonwebtoken");
 
 const app = express();
 

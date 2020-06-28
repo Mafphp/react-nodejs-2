@@ -6,7 +6,6 @@ const jwt = require("jsonwebtoken");
 /* GET users listing. */
 router.get("/", async function (req, res) {
   const result = await db.user.findAll();
-  console.log("exit");
   res.json({
     status: 200,
     data: result,
