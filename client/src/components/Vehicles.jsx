@@ -1,14 +1,6 @@
 import React, { Component } from "react";
-import * as axios from "axios";
 import DataTable from "./DataTable";
-import API from "./services/httpservice";
-// import App from "../App";
 class Vehicles extends Component {
-  // const { data: cars } = await API.get(`vehicles`);
-  // this.setState({ cars });
-
-  // console.log(response);
-
   render() {
     const columns = [
       {

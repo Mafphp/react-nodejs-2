@@ -1,7 +1,6 @@
-import React, { Component, useState, useEffect } from "react";
-import { Link, Redirect } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { tokenService } from "./services/tokenService";
-import { logout } from "./services/authservice";
 import Cookies from "universal-cookie";
 
 export default function Navbar () {
@@ -30,9 +29,9 @@ export default function Navbar () {
             <Link className="navbar-brand" to="/">
               Car Rental
             </Link>
-            <Link className="navbar-brand" to="/payment">
+            {/* <Link className="navbar-brand" to="/payment">
               Payment
-            </Link>
+            </Link> */}
             <Link className="navbar-brand" to="/configure">
               Configure
             </Link>

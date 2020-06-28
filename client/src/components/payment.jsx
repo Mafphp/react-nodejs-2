@@ -1,7 +1,19 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import Cookies from "universal-cookie";
 
 class Payment extends Component {
+  constructor(props) {
+    super(props);
+  }
+  componentDidMount() {
+    const token = new Cookies().get("token")
+    if (token && (!this.props.location.state || !this.props.location.state.totalPrice)) {
+      this.props.history.push('/configure') 
+    }
+    if (!token) {
+      this.props.history.push('/login') 
+    }
+  }
   state = {};
   render() {
     return (
@@ -46,7 +58,7 @@ class Payment extends Component {
                 placeholder=""
                 required
               ></input>
-              <div className="invalid-feedback">Expiration daterequired</div>
+              <div className="invalid-feedback">Expiration date required</div>
             </div>
             <div className="col-md-3 m-3">
               <label htmlFor="cc-name">CVV</label>
@@ -60,10 +72,10 @@ class Payment extends Component {
               <div className="invalid-feedback">Security code required</div>
             </div>
           </div>
-          <hr class="mb-4"></hr>
-          <buttbutton Redirect="/configure" className="btn btn-primary">
+          <hr className="mb-4"></hr>
+          <button Redirect="/configure" className="btn btn-primary">
             Submit
-          </buttbutton>
+          </button>
         </form>
       </React.Fragment>
     );

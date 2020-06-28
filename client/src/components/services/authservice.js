@@ -1,7 +1,6 @@
 import API from "./httpservice";
 import Cookies from 'universal-cookie';
 import { tokenService } from "./tokenService";
-import { Redirect } from "react-router-dom";
 
 const apiEndpint = "users/login";
 const cookies = new Cookies();

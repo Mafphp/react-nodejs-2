@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { getprice } from "./services/getprice";
 import API from "./services/httpservice";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import * as moment from "moment";
-import Booking from "./booking";
 
 class Criteria extends Component {
   state = {
@@ -30,37 +28,29 @@ class Criteria extends Component {
 
   changeHandlerKM = (e) => {
     this.setState({ KM: e.target.value });
-    console.log(e.target.value);
   };
   changeHandlerAge = (e) => {
     this.setState({ age: e.target.value });
-    console.log(e.target.value);
   };
   changeHandlerIns = (e) => {
     this.setState({ insurance: e.target.value });
-    console.log(e.target.value);
   };
   changeHandlercategory = async (e) => {
     let value = e.target.value;
-    console.log(e.target.value);
     const totalNumberOfCategory = await API.post("vehicles/category/total", {
       category: `${value}`,
     });
-    console.log(totalNumberOfCategory);
     const res = await API.post("vehicles/category", {
       category: `${value}`,
     });
-    console.log(res);
     this.setState({
       category: value,
       basePrice: res.data.data.price,
       totalNumberOfCategory: totalNumberOfCategory.data.data,
     });
-    console.log(value);
   };
   changeHandlerExtra = (e) => {
     this.setState({ extraDriver: e.target.value });
-    console.log(e.target.value);
   };
   handleChange = (date, key) => {
     this.setState({
@@ -88,7 +78,6 @@ class Criteria extends Component {
       startDate: { startDate },
       endDate: { endDate },
     });
-    console.log(res.data.data);
     this.setState({
       totalNumberOfBooked: res.data.data,
       numberOfavailability: totalNumberOfCategory - totalNumberOfBooked,
@@ -110,11 +99,9 @@ class Criteria extends Component {
     if (KM === "less 150KM") totalPrices += 0;
     else if (KM === "less 50KM") totalPrices -= fivePercent * basePrice;
     else if (KM === "Unlimited") totalPrices += fivePercent * basePrice;
-    console.log(basePrice);
     if (age === "below 25") totalPrices += fivePercent * basePrice;
     else if (age === "over 65") totalPrices += tenPercent * basePrice;
     else if (age === "25 to 65") totalPrices += 0;
-    console.log(basePrice);
 
     if (extraDriver !== "") totalPrices += fifteenPercent * basePrice;
     if (insurance === "Yes") totalPrices += twentyPercent * basePrice;
@@ -129,10 +116,6 @@ class Criteria extends Component {
   };
 
   render() {
-    console.log("value of caat", this.state.totalNumberOfCategory);
-    console.log("startDate", this.state.startDate);
-    console.log("endDate", this.state.endDate);
-    console.log(Object.keys(this.state));
     const { numberOfavailability, totalPrice } = this.state;
 
     return (
@@ -273,7 +256,7 @@ class Criteria extends Component {
                   </div>
                 </td>
                 <td className="col ">
-                  <Link to="/payment" className="btn btn-primary">
+                  <Link to={{pathname: "/payment", state: {totalPrice: totalPrice}}} className="btn btn-primary">
                     Book
                   </Link>
                 </td>

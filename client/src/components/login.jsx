@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Input from "./common/input";
 import { login } from "./services/authservice";
 import { Redirect } from "react-router-dom";
-import { tokenService } from "./services/tokenService";
 import Cookies from "universal-cookie";
 
 class LoginForm extends Component {

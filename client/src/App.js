@@ -1,7 +1,4 @@
 import React from "react";
-import logo from "./logo.svg";
-import Header from "./components/Header";
-import * as axios from "axios";
 import Vehicles from "./components/Vehicles";
 import Footers from "./components/Footer";
 import { Route, Switch, Redirect } from "react-router-dom";
@@ -38,6 +35,7 @@ class App extends Component {
           <Switch>
             <Route path="/configure" component={Configure}></Route>
             <Route path="/login" component={LoginForm}></Route>
+            <Route path="/payment" component={Payment}/>
             <Route path="/logout" component={Logout}></Route>
             <Route
               path="/vehicles"
