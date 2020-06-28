@@ -12,6 +12,10 @@ async function post(url, body) {
   const result = await axios.post(`http://localhost:3002/${url}`, { ...body });
   return result;
 }
+async function put(url, body) {
+  const result = await axios.post(`http://localhost:3002/${url}`, { ...body });
+  return result;
+}
 
-const API = { get, post };
+const API = { get, post, put };
 export default API;
