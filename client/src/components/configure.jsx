@@ -2,10 +2,6 @@ import React, { Component } from "react";
 import Criteria from "./form";
 import Reservation from "./reservation";
 import History from "./history";
-
-import Cookies from "universal-cookie";
-// import API from "./services/httpservice";
-import { updateStatus } from "./services/updateReservationStatus";
 import API from "./services/API";
 import { AuthContext } from "../auth/AuthContext";
 class Configure extends Component {
@@ -26,15 +22,12 @@ class Configure extends Component {
   async componentDidMount() {
     // updateStatus();
     const reserveList = await API.getReservations();
-    console.log({reserveList});
+    const historyList = await API.getHistory();
     this.setState({
-      reserveList
+      reserveList,
+      historyList
     });
-    // const historyList = await API.get("reservations/username/history");
-    // this.setState({
-    //   historyList: historyList.data.data,
-    //   reservList: reservList.data.data,
-    // });
+    
   }
   myCallback = (e) => {
     this.setState({ listData: e });

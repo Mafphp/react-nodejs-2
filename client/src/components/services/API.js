@@ -144,6 +144,18 @@ async function getReservations() {
     }
 }
 
+async function getHistory() {
+    let url = "/history";
+    const response = await fetch(privateUrl + url);
+    const json = await response.json();
+    if(response.ok){
+        return json.data;
+    } else {
+        let err = {status: response.status, errObj: json};
+        throw err;  // An object with the error coming from the server
+    }
+}
+
 
 async function isAuthenticated(){
     let url = "/user";
@@ -167,6 +179,6 @@ const API = {
     userLogin,
     userLogout,
     getVehicles,
-    // login
+    getHistory
 } ;
 export default API;

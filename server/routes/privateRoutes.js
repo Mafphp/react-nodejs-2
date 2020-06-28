@@ -102,11 +102,17 @@ router.put("/updating", async (req, res) => {
     }
 });
   
-router.get("/username/history", async function (req, res) {
+router.get("/history", async function (req, res) {
     try {
         const result = await db.reservations.findAll({
-            where: { status: false },
+            where: { status: false, username: req.user.username },
         });
+        result.forEach(r => ({
+            ...r, 
+            startDate: moment(r.startDate).format('YYYY-MM-DD'), 
+            endDate: moment(r.endDate).format('YYYY-MM-DD'),
+            category: r.category
+        }))
         res.json({
             status: 200,
             data: result,
@@ -120,13 +126,12 @@ router.get("/reservations", async function (req, res) {
         let result = await db.reservations.findAll({
             where: { status: true, username: req.user.username },
         });
-        result = result.map(r => ({
+        result.forEach(r => ({
             ...r, 
             startDate: moment(r.startDate).format('YYYY-MM-DD'), 
             endDate: moment(r.endDate).format('YYYY-MM-DD'),
             category: r.category
         }))
-        
         res.json({
             status: 200,
             data: result,
