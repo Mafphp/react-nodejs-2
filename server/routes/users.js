@@ -18,15 +18,13 @@ router.post("/login", async function (req, res) {
   const validPassword = await bcrypt.compare(req.body.password, user.password);
   if (!validPassword) return res.status(400).send("Invalid email or password.");
   const token = jwt.sign({ user }, "12345");
-  res.cookie("token", token);
+  req.session.user = user;
   res.json({
     token,
   });
 });
 
 router.post("/create", async function (req, res) {
-  console.log(req.body);
-  console.log("exit");
   await db.user.create(req.body);
   res.send("user create successfully");
 });

@@ -1,41 +1,49 @@
-var createError = require("http-errors");
-var express = require("express");
-var bodyParser = require("body-parser");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-var cors = require("cors");
+const createError = require("http-errors");
+const express = require("express");
+const bodyParser = require("body-parser");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const session = require('express-session');
+const logger = require("morgan");
+const cors = require("cors");
 const jwt = require("jsonwebtoken");
 
-var app = express();
+const app = express();
 
 app.use(cors());
-app.use(cookieParser());
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
-const privateRoute = (req, res, next) => {
-  if (req.cookies && req.cookies.token) {
-    try {
-      req.user = jwt.verify(req.cookies.token, "12345");
-    } catch (err) {
-      res.status(500).send(err.message);
-    }
+app.use(cookieParser());
+app.use(session({
+  key: 'token',
+  secret: '12345',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+      expires: 600000
   }
-  next();
-};
+}));
+// private routes
+const privateRoute = (req, res, next) => {
+  if (req.session.user && req.cookies.token) {
+    next();
+  } else {
+      res.status(500).send('token or session expired')
+  }
+}
 
-var indexRouter = require("./routes/index");
+const indexRouter = require("./routes/index");
 app.use("/", indexRouter);
-var usersRouter = require("./routes/users");
+const usersRouter = require("./routes/users");
 app.use("/users", usersRouter);
-var vehiclesRouter = require("./routes/vehicles");
-app.use("/vehicles", privateRoute, vehiclesRouter);
+const vehiclesRouter = require("./routes/vehicles");
+app.use("/vehicles", vehiclesRouter);
 
-var reservationRouter = require("./routes/reservations");
-app.use("/reservations", reservationRouter);
+const reservationRouter = require("./routes/reservations");
+app.use("/reservations", privateRoute, reservationRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

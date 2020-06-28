@@ -1,21 +1,11 @@
-POST http://localhost:3002/vehicles/getprice
+POST http://localhost:3002/users/login
 Content-Type: application/json
 
 {
-      "id": 3,
-      "brand": "BMW",
-      "model": "Z4",
-      "category": "C",
-      "price": 60,
-      "createdAt": null,
-      "updatedAt": null
-    },
+      "username": "farhad",
+      "password": "123"
+}
 
 ###
+POST http://localhost:3002/reservations/category
 
-GET http://localhost:3002/vehicles/
-# Content-Type: application/json
-
-# {
-#     "category":"A"
-# }
