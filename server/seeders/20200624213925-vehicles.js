@@ -31,8 +31,8 @@ module.exports = {
         },
         {
           category: "D",
-          brand: "admin",
-          model: "admin",
+          brand: "BMW",
+          model: "I6",
           price: "50",
           createdAt: new Date().toDateString(),
           updatedAt: new Date().toDateString(),

@@ -5,6 +5,18 @@ const { QueryTypes } = require("sequelize");
 
 const { sequelize } = require("../models");
 
+router.get("/username/history", async function (req, res) {
+  const result = await db.reservations.findAll({
+    where: { status: false },
+  });
+  // console.log(result);
+  // console.log("exit");
+  let a = res.json({
+    status: 200,
+    data: result,
+  });
+});
+
 router.post("/category", async function (req, res) {
   console.log("-0------");
   let result = await db.sequelize.query(

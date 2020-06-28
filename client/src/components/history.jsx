@@ -3,7 +3,7 @@ import DataTable from "./DataTable";
 const History = (props) => {
   const columns = [
     {
-      name: "start_date",
+      name: "startDate",
       label: "Starting Date",
       options: {
         filter: true,
@@ -11,7 +11,7 @@ const History = (props) => {
       },
     },
     {
-      name: "end_date",
+      name: "endDate",
       label: "End Date",
       options: {
         filter: true,
@@ -31,7 +31,7 @@ const History = (props) => {
     <DataTable
       columns={columns}
       title={"History List"}
-      data={props.listReservations}
+      data={props.historyData}
     />
   );
 };

@@ -22,6 +22,16 @@ class Criteria extends Component {
     totalNumberOfBooked: "",
     numberOfavailability: "",
   };
+
+  sendToParent = () => {
+    const listInfo = {
+      startDate: this.state.startDate,
+      endDate: this.state.endDate,
+      category: this.state.category,
+    };
+    this.props.callbackFromParent(listInfo);
+  };
+
   getBasePrice = async (e) => {
     const res = await API.post("vehicles/category", {
       category: `${e.target.value}`,
@@ -144,8 +154,11 @@ class Criteria extends Component {
                 <td>
                   <label htmlFor="basic-url ">Starting Date </label>
                   <DatePicker
-                    selected={this.state.startDate}
-                    onChange={(date) => this.handleChange(date, "startDate")}
+                    selected={this.state.date}
+                    onChange={(value: any) => {
+                      // value here is javascript date object
+                      this.setState({ date: moment(value) });
+                    }}
                     dateFormat="yyyy/MM/dd"
                     minDate={new Date()}
                   />
@@ -273,7 +286,10 @@ class Criteria extends Component {
                   </div>
                 </td>
                 <td className="col ">
-                  <Link to="/payment" className="btn btn-primary">
+                  <Link
+                    to={`/payment/${this.state.startDate}/${this.state.endDate}/${this.state.category}`}
+                    className="btn btn-primary"
+                  >
                     Book
                   </Link>
                 </td>

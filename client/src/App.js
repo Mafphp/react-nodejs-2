@@ -17,13 +17,16 @@ import NavBar from "./components/navbar";
 class App extends Component {
   state = {
     cars: [],
+
     token: null,
   };
 
   async componentDidMount() {
     const listCars = await API.get("vehicles");
+    // console.log(listCars);
     const result2 = await API.get("vehicles/category");
     const catPrice = await API.get("vehicles/category");
+
     this.setState({
       cars: listCars.data.data,
       categories: result2.data.data,
@@ -33,10 +36,11 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <NavBar/>
+        <NavBar />
         <div className="container">
           <Switch>
             <Route path="/configure" component={Configure}></Route>
+            <Route path="/payment" exact component={Payment}></Route>
             <Route path="/login" component={LoginForm}></Route>
             <Route path="/logout" component={Logout}></Route>
             <Route
@@ -45,7 +49,7 @@ class App extends Component {
             ></Route>
             <Route path="/not-found" component={NotFound}></Route>
             <Redirect from="/" exact to="vehicles" />
-            <Redirect to="/not-found" /> //apply to all
+            {/* <Redirect to="/not-found" /> //apply to all */}
           </Switch>
         </div>
         <Footers />

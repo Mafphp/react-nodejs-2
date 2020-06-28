@@ -3,6 +3,15 @@ import { Redirect } from "react-router-dom";
 
 class Payment extends Component {
   state = {};
+
+  // handlerPress = async(props) => {
+  //   const res = await API.post("reservations/", {
+  //     category: { props.match.params.name },
+  //     startDate: { startDate },
+  //     endDate: { endDate },
+  //   });
+  // };
+
   render() {
     return (
       <React.Fragment>
@@ -61,7 +70,11 @@ class Payment extends Component {
             </div>
           </div>
           <hr class="mb-4"></hr>
-          <buttbutton Redirect="/configure" className="btn btn-primary">
+          <buttbutton
+            Redirect="/configure"
+            Onclick={this.handlerPress}
+            className="btn btn-primary"
+          >
             Submit
           </buttbutton>
         </form>
