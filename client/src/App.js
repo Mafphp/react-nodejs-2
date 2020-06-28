@@ -25,7 +25,6 @@ class App extends Component {
      //check if the user is authenticated
      API.isAuthenticated().then(
       (user) => {
-        console.log({user});
         this.setState({authUser: user});
       }
     ).catch((err) => { 
@@ -59,7 +58,6 @@ class App extends Component {
       loginUser: this.login,
       logoutUser: this.logout
     }
-    console.log({value});
     return (
         <AuthContext.Provider value={value}>
           <NavBar />

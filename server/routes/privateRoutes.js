@@ -66,16 +66,13 @@ router.post("/all_vehicles_in_specific_category", async function (req, res) {
 });
 
 // reservation
-router.post("/book", async (req, res) => {
+router.post("/vehicle_booked", async (req, res) => {
     try {
-        const username = "admin";
         const { startDate, endDate, category } = req.body;
-        const start_date = moment(startDate).format("YYYY/MM/DD");
-        const end_date = moment(endDate).format("YYYY/MM/DD");
         await db.reservations.create({
-        startDate: start_date,
-        endDate: end_date,
-        username: username,
+        startDate: startDate,
+        endDate: endDate,
+        username: req.user.username,
         category: category,
         status: true,
         });
@@ -140,7 +137,19 @@ router.get("/reservations", async function (req, res) {
         res.status(401).json(serverErrorObj);
     }
 });
-  
+router.post("/cancel_reservation", async function (req, res) {
+    try {
+        await db.reservations.update({status: 0}, {
+            where: { id: req.body.id },
+        });
+        res.json({
+            status: 200,
+        });
+    } catch (error) {
+        res.status(401).json(serverErrorObj);
+    }
+});
+
 router.post("/reservation_between_date", async function (req, res) {
     try {
         let result = await db.sequelize.query(

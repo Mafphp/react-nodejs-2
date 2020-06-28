@@ -1,33 +1,35 @@
 import React, { Component } from "react";
-import API from "./services/httpservice";
+import API from "./services/API";
 import {AuthContext} from '../auth/AuthContext'
+import { Link } from "react-router-dom";
 
 class Payment extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isSubmitted: false
+    }
   }
-  componentDidMount() {
-    console.log("props@", this.props);
-  }
-
   handlerPress = async (e) => {
     e.preventDefault();
-    const username = "farhad";
     const { startDate, endDate, category } = this.props.location.state;
-    await API.post("reservations/book", {
+    await API.vehicleBooked({
       startDate,
       endDate,
       category,
-      username,
+    });
+    this.setState({
+      isSubmitted: true
     });
   };
-  state = {};
 
   render() {
     return (
       <AuthContext.Consumer>
           {(context) => (
-            <React.Fragment>
+            <>
+            {!this.state.isSubmitted ? (
+              <React.Fragment>
               <div className="row">
                 <div className="col-md-6 m-3">
                   <label htmlFor="cc-name">Name on Card</label>
@@ -82,12 +84,26 @@ class Payment extends Component {
               <hr className="mb-4"></hr>
               <button
                 Redirect="/configure"
-                onClick={this.handlerPress}
+                onClick={(e) => this.handlerPress(e)}
                 className="btn btn-primary"
               >
                 Submit
               </button>
           </React.Fragment> 
+            ) : (
+              <div className="container">
+                <div className="row">
+                  vehicle successfully reserved
+                </div>
+                <div className="row">
+                  <div className="col">
+                    <Link to={"/configure"} className="btn btn-success">Show All Reservation</Link>
+                  </div>
+                </div>
+              </div>
+            )}
+            </>
+            
           )}
       </AuthContext.Consumer>
     );

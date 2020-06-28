@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import DataTable from "./DataTable";
+import API from "./services/API";
 class Reservation extends Component {
   state = {};
 
@@ -11,6 +12,9 @@ class Reservation extends Component {
   };
   render() {
     const columns = [
+      {
+        name: "id",
+      },
       {
         name: "startDate",
         label: "Starting Date",
@@ -37,15 +41,29 @@ class Reservation extends Component {
       },
     ];
 
-    // const options = {
-    //   onRowsDelete: (rowsDeleted) => {
-    //     const idsToDelete = rowsDeleted.data.map((d) => data[d.dataIndex].id); // array of all ids to to be deleted
-    //     API.delete(idsToDelete, res).then(window.alert("Deleted!")); // your delete request here
-    //   },
-    // };
+    const options = {
+      filter: true,
+      filterType: "dropdown",
+      responsive: "standard",
+      tableBodyHeight: "100%",
+      tableBodyMaxHeight: "",
+      print: false,
+      download: false,
+      viewColumns: false,
+      onRowsDelete: async (rowsDeleted, dataRows) => {
+        if (dataRows[0]) {
+          const id = dataRows[0][0];
+          await API.cancelReservation({id});
+          this.props.history.push('configure');
+        } else {
+          alert('could not cancel last reservation')
+        }
+      }
+    };
     return (
       <DataTable
         columns={columns}
+        options={options}
         title={"Reservation List"}
         data={this.props.currentData}
       />

@@ -249,7 +249,7 @@ class Criteria extends Component {
           <div className="row">
                   <div className="col">
                     <p>
-                      {numberOfavailability} cars are Available and the Price is {totalPrice}, please click Book for reservation
+                      {numberOfavailability} cars are Available and the Price is <span className="badge badge-primary">{totalPrice}</span>, please click Book for reservation
                     </p>
                   </div>
                   <div className="col">
