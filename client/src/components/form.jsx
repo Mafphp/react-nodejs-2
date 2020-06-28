@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import API from "./services/httpservice";
+import API from "./services/API";
 import { Link } from "react-router-dom";
 import * as moment from "moment";
 
@@ -31,9 +31,9 @@ class Criteria extends Component {
   };
 
   getBasePrice = async (e) => {
-    await API.post("vehicles/category", {
-      category: `${e.target.value}`,
-    });
+    // await API.post("vehicles/category", {
+    //   category: `${e.target.value}`,
+    // });
   };
 
   changeHandlerKM = (e) => {
@@ -45,19 +45,14 @@ class Criteria extends Component {
   changeHandlerIns = (e) => {
     this.setState({ insurance: e.target.value });
   };
-  changeHandlercategory = async (e) => {
+  changeHandlerCategory = async (e) => {
     let value = e.target.value;
-    const totalNumberOfCategory = await API.post("vehicles/category/total", {
-      category: `${value}`,
-    });
-    const res = await API.post("vehicles/category", {
-      category: `${value}`,
-    });
-
+    const totalNumberOfCategory = await API.getAllVehiclesBaseOnCategory(value);
+    const categoryPrice = await API.getCategoryPrice(value);
     this.setState({
       category: value,
-      basePrice: res.data.data.price,
-      totalNumberOfCategory: totalNumberOfCategory.data.data,
+      basePrice: categoryPrice,
+      totalNumberOfCategory: totalNumberOfCategory,
     });
   };
   changeHandlerExtra = (e) => {
@@ -84,14 +79,19 @@ class Criteria extends Component {
       numberOfavailability,
       totalNumberOfBooked,
     } = this.state;
-    const res = await API.post("reservations/category", {
+    const getReservationOnCategory = await API.getReservationBaseOnCategory({
       category: category,
       startDate: startDate,
       endDate: endDate,
     });
-    console.log(res.data.data);
+    console.log({getReservationOnCategory});
+    // const res = await API.post("reservations/category", {
+    //   category: category,
+    //   startDate: startDate,
+    //   endDate: endDate,
+    // });
     this.setState({
-      totalNumberOfBooked: res.data.data,
+      // totalNumberOfBooked: res.data.data,
       numberOfavailability: totalNumberOfCategory - totalNumberOfBooked,
     });
 
@@ -132,35 +132,32 @@ class Criteria extends Component {
 
     return (
       <React.Fragment>
-        <form>
-          <table className="table table-borderless">
-            <tbody>
-              <tr>
-                <td>
-                  <label htmlFor="basic-url ">Starting Date </label>
+        <div className="container">
+          <div className="row">
+            <div className="col">
+            <label htmlFor="basic-url ">Starting Date </label>
                   <DatePicker
+                    className="form-control"
                     selected={this.state.startDate}
                     onChange={(date) => this.handleChange(date, "startDate")}
                     dateFormat="yyyy/MM/dd"
                     minDate={new Date()}
                   />
-                </td>
-                <td>
-                  <div>
-                    <label htmlFor="basic-url">End Date </label>
+            </div>
+          <div className="col">
+          <label htmlFor="basic-url">End Date </label>
                     <DatePicker
+                      className="form-control"
                       selected={this.state.endDate}
                       onChange={(date) => this.handleChange(date, "endDate")}
                       dateFormat="dd/MM/yyyy"
                       minDate={this.state.startDate}
-                    />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="col-md-7">
-                    <label htmlFor="KM">KM</label>
+                  />
+          </div>
+          </div>
+          <div className="row">
+              <div className="col">
+              <label htmlFor="KM">KM</label>
                     <select
                       onChange={this.changeHandlerKM}
                       name=""
@@ -173,29 +170,25 @@ class Criteria extends Component {
                       <option>less 150KM</option>
                       <option>Unlimited</option>
                     </select>
-                  </div>
-                </td>
-                <td>
-                  <div className="col-md-7">
-                    <label htmlFor="insurance">Insurance</label>
+              </div>
+              <div className="col">
+              <label htmlFor="insurance">Insurance</label>
                     <select
                       onChange={(e) => this.changeHandlerIns(e)}
                       name=""
                       id="insurance"
-                      className="custom-select d-black w-100"
+                      className="form-control custom-select d-black w-100"
                       required
                     >
                       <option value="">Choose...</option>
                       <option>No</option>
                       <option>Yes</option>
                     </select>
-                  </div>
-                </td>
-                <td>
-                  <div className="col-md-7">
-                    <label htmlFor="category">Category</label>
+              </div>
+              <div className="col">
+              <label htmlFor="category">Category</label>
                     <select
-                      onChange={(e) => this.changeHandlercategory(e)}
+                      onChange={(e) => this.changeHandlerCategory(e)}
                       name=""
                       id="category"
                       className="custom-select d-black w-100"
@@ -208,13 +201,11 @@ class Criteria extends Component {
                       <option>D</option>
                       <option>E</option>
                     </select>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="col-md-3 mb-3">
-                    <label htmlFor="Age">Age</label>
+              </div>
+          </div>
+          <div className="row">
+            <div className="col">
+            <label htmlFor="Age">Age</label>
                     <select
                       onChange={this.changeHandlerAge}
                       name=""
@@ -227,16 +218,14 @@ class Criteria extends Component {
                       <option>25 to 65</option>
                       <option>over 65</option>
                     </select>
-                  </div>
-                </td>
-                <td>
-                  <div className="col-md-3 mb-3">
-                    <label htmlFor="extraDriver">Extra Driver</label>
+            </div>
+            <div className="col">
+            <label htmlFor="extraDriver">Extra Driver</label>
                     <select
                       onChange={this.changeHandlerExtra}
                       name=""
                       id="extraDriver"
-                      className="custom-select d-black w-100"
+                      className="form-control custom-select d-black w-100"
                       required
                     >
                       <option value="">Choose...</option>
@@ -246,42 +235,33 @@ class Criteria extends Component {
                       <option>4</option>
                       <option>5</option>
                     </select>
-                  </div>
-                </td>
-                <td>
-                  <button
-                    value=""
-                    onClick={this.handlertotalNumberOfBooked}
-                    className="btn btn-danger btn-sm m-5"
-                  >
-                    Search
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div>
+            </div>
+              <div className="col">
+                <button
+                      value=""
+                      onClick={this.handlertotalNumberOfBooked}
+                      className="btn btn-danger btn-sm m-5"
+                    >
+                      Search
+                    </button>
+              </div>
+          </div>
+          <div className="row">
+                  <div className="col">
                     <p>
-                      {numberOfavailability} cars are Available and the Price is
-                      {totalPrice}, please click Book for reservation
+                      {numberOfavailability} cars are Available and the Price is {totalPrice}, please click Book for reservation
                     </p>
                   </div>
-                </td>
-                <td className="col ">
+                  <div className="col">
                   <Link
                     to={{
                       pathname: "/payment",
                       state: this.state,
                     }}
-                    className="btn btn-primary"
-                  >
-                    Book
-                  </Link>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </form>
+                    className="btn btn-primary"> Book </Link>
+                  </div>
+          </div>
+        </div>
       </React.Fragment>
     );
   }

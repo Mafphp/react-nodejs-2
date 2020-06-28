@@ -169,6 +169,76 @@ async function isAuthenticated(){
     }
 }
 
+
+async function getAllVehiclesBaseOnCategory(category) {
+    return new Promise((resolve, reject) => {
+        fetch(privateUrl + '/all_vehicles_in_specific_category', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({category: category}),
+        }).then((response) => {
+            if (response.ok) {
+                response.json().then((res) => {
+                    resolve(res.data);
+                });
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((obj) => { reject(obj); }) // error msg in the response body
+                    .catch((err) => { reject({ errors: [{ param: "Application", msg: "Cannot parse server response" }] }) }); // something else
+            }
+        }).catch((err) => { reject({ errors: [{ param: "Server", msg: "Cannot communicate" }] }) }); // connection errors
+    });
+}
+
+async function getCategoryPrice(category) {
+    return new Promise((resolve, reject) => {
+        fetch(privateUrl + '/category_price', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({category: category}),
+        }).then((response) => {
+            if (response.ok) {
+                response.json().then((res) => {
+                    resolve(res.data.price);
+                });
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((obj) => { reject(obj); }) // error msg in the response body
+                    .catch((err) => { reject({ errors: [{ param: "Application", msg: "Cannot parse server response" }] }) }); // something else
+            }
+        }).catch((err) => { reject({ errors: [{ param: "Server", msg: "Cannot communicate" }] }) }); // connection errors
+    });
+}
+
+async function getReservationBaseOnCategory(body) {
+    return new Promise((resolve, reject) => {
+        fetch(privateUrl + '/reservation_between_date', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        }).then((response) => {
+            if (response.ok) {
+                response.json().then((res) => {
+                    resolve(res.data.count);
+                });
+            } else {
+                // analyze the cause of error
+                response.json()
+                    .then((obj) => { reject(obj); }) // error msg in the response body
+                    .catch((err) => { reject({ errors: [{ param: "Application", msg: "Cannot parse server response" }] }) }); // something else
+            }
+        }).catch((err) => { reject({ errors: [{ param: "Server", msg: "Cannot communicate" }] }) }); // connection errors
+    });
+}
+
 const API = { 
     isAuthenticated,
     getTasks,
@@ -179,6 +249,9 @@ const API = {
     userLogin,
     userLogout,
     getVehicles,
-    getHistory
+    getHistory,
+    getAllVehiclesBaseOnCategory,
+    getCategoryPrice,
+    getReservationBaseOnCategory
 } ;
 export default API;

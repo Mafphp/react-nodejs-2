@@ -35,7 +35,7 @@ router.get("/category", async function (req, res) {
    }
 });
   
-router.post("/category/price", async function (req, res) {
+router.post("/category_price", async function (req, res) {
     try {
         const price = await db.vehicles.findOne({
             attributes: ["price"],
@@ -50,7 +50,7 @@ router.post("/category/price", async function (req, res) {
         res.status(401).json(serverErrorObj);
     }
 });
-router.post("/category/total", async function (req, res) {
+router.post("/all_vehicles_in_specific_category", async function (req, res) {
     try {
         const total = await db.vehicles.findAndCountAll({
             where: { category: req.body.category },
@@ -141,7 +141,7 @@ router.get("/reservations", async function (req, res) {
     }
 });
   
-router.post("/category", async function (req, res) {
+router.post("/reservation_between_date", async function (req, res) {
     try {
         let result = await db.sequelize.query(
             `
