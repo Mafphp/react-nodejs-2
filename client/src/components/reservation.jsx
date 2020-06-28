@@ -36,11 +36,18 @@ class Reservation extends Component {
         },
       },
     ];
+
+    // const options = {
+    //   onRowsDelete: (rowsDeleted) => {
+    //     const idsToDelete = rowsDeleted.data.map((d) => data[d.dataIndex].id); // array of all ids to to be deleted
+    //     API.delete(idsToDelete, res).then(window.alert("Deleted!")); // your delete request here
+    //   },
+    // };
     return (
       <DataTable
         columns={columns}
         title={"Reservation List"}
-        data={this.props.listReservations}
+        data={this.props.currentData}
       />
     );
   }

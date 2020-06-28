@@ -33,10 +33,10 @@ router.post("/category", async function (req, res) {
     where: { category: req.body.category },
   });
   onePrice = price.dataValues;
-  console.log(onePrice);
-  console.log(req.body);
-  console.log("exit");
-  let a = res.json({
+  // console.log(onePrice);
+  // console.log(req.body);
+  // console.log("exit");
+  res.json({
     status: 200,
     data: onePrice,
   });
@@ -46,9 +46,8 @@ router.post("/category/total", async function (req, res) {
     where: { category: req.body.category },
   });
 
-  console.log(total.count);
   oneTotal = total.count;
-  let a = res.json({
+  res.json({
     status: 200,
     data: oneTotal,
   });

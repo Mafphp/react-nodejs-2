@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 /* GET users listing. */
 router.get("/", async function (req, res) {
   const result = await db.user.findAll();
-  console.log("exit");
+  // console.log("exit");
   res.json({
     status: 200,
     data: result,
@@ -25,8 +25,8 @@ router.post("/login", async function (req, res) {
 });
 
 router.post("/create", async function (req, res) {
-  console.log(req.body);
-  console.log("exit");
+  // console.log(req.body);
+  // console.log("exit");
   await db.user.create(req.body);
   res.send("user create successfully");
 });

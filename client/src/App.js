@@ -1,7 +1,4 @@
 import React from "react";
-import logo from "./logo.svg";
-import Header from "./components/Header";
-import * as axios from "axios";
 import Vehicles from "./components/Vehicles";
 import Footers from "./components/Footer";
 import { Route, Switch, Redirect } from "react-router-dom";
@@ -25,7 +22,7 @@ class App extends Component {
     const listCars = await API.get("vehicles");
     // console.log(listCars);
     const result2 = await API.get("vehicles/category");
-    const catPrice = await API.get("vehicles/category");
+    // const catPrice = await API.get("vehicles/category");
 
     this.setState({
       cars: listCars.data.data,
