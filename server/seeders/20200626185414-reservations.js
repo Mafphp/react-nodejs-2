@@ -6,8 +6,8 @@ module.exports = {
       "reservations",
       [
         {
-          startDate: "2020/06/27",
-          endDate: "2020/06/30",
+          startDate: new Date("2020/06/27"),
+          endDate: new Date("2020/06/30"),
           username: "alireza",
           category: "A",
           status: false,
@@ -15,8 +15,8 @@ module.exports = {
           updatedAt: new Date().toDateString(),
         },
         {
-          startDate: "2020/06/27",
-          endDate: "2020/06/30",
+          startDate: new Date('2020/06/27'),
+          endDate: new Date('2020/06/30'),
           username: "amir",
           category: "B",
           status: false,
@@ -24,8 +24,8 @@ module.exports = {
           updatedAt: new Date().toDateString(),
         },
         {
-          startDate: "2020/07/3",
-          endDate: "2020/06/7",
+          startDate: new Date("2020/07/3"),
+          endDate: new Date("2020/06/7"),
           username: "farhad",
           category: "A",
           status: true,

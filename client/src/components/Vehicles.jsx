@@ -1,11 +1,18 @@
 import React, { Component } from "react";
 import DataTable from "./DataTable";
-import API from "./services/httpservice";
+import API from './services/API'
+import { AuthContext } from "../auth/AuthContext";
 class Vehicles extends Component {
-  // const { data: cars } = await API.get(`vehicles`);
-  // this.setState({ cars });
-  // console.log(response);
-
+  state = {
+    vehicles: []
+  }
+  async componentDidMount() {
+    console.log('aaaaaa');
+    const vehicles = await API.getVehicles();
+    this.setState({
+      vehicles
+    });
+  }
   render() {
     const columns = [
       {
@@ -33,42 +40,12 @@ class Vehicles extends Component {
         },
       },
     ];
-
     return (
-      <DataTable
-        columns={columns}
-        title={"Vehicles List"}
-        data={this.props.listCars}
-      />
-
-      // <div className="row">
-      //   <div className="col-m2"></div>
-      //   <div className="col">
-      //     <table className="table">
-      //       <thead>
-      //         <tr>
-      //           <th>category</th>
-      //           <th>brand</th>
-      //           <th>model</th>
-      //         </tr>
-      //       </thead>
-      //       <tbody>
-      //         {this.state.cars.map((car, i) => (
-      //           <tr key={i}>
-      //             <td>{car.category}</td>
-      //             <td>{car.brand}</td>
-      //             <td>{car.model}</td>
-      //           </tr>
-      //         ))}
-      //         <tr>
-      //           <td></td>
-      //           <td></td>
-      //           <td></td>
-      //         </tr>
-      //       </tbody>
-      //     </table>
-      //   </div>
-      // </div>
+        <DataTable
+          columns={columns}
+          title={"Vehicles List"}
+          data={this.state.vehicles}
+        />
     );
   }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import MUIDataTable from "mui-datatables";
-export default function DataTable({ columns, data, title }) {
-  const options = {
+export default function DataTable({ columns, data, title, options }) {
+  let _options = {
     filter: true,
     filterType: "dropdown",
     responsive: "standard",
@@ -11,6 +11,9 @@ export default function DataTable({ columns, data, title }) {
     download: false,
     viewColumns: false,
   };
+  if (options) {
+    _options = options;
+  }
   return (
     <React.Fragment>
       <MUIDataTable
